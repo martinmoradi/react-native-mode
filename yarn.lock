@@ -2479,14 +2479,14 @@ eslint-config-prettier@^6.10.1:
   dependencies:
     get-stdin "^6.0.0"
 
-eslint-config-react-native-wcandillon@^3.3.0:
-  version "3.3.0"
-  resolved "https://registry.yarnpkg.com/eslint-config-react-native-wcandillon/-/eslint-config-react-native-wcandillon-3.3.0.tgz#3f887edbbee65066a8722cef9e7b5c82c26f24e8"
-  integrity sha512-9JEQHz2LAtxHhEV93hybYFQuydJyv9EjvByiNnfdEMjXEXnztMWkcabNf4H7/DZ1X6rTueo7624bbfvVSfmW+Q==
+eslint-config-react-native-wcandillon@3.3.1:
+  version "3.3.1"
+  resolved "https://registry.yarnpkg.com/eslint-config-react-native-wcandillon/-/eslint-config-react-native-wcandillon-3.3.1.tgz#be8a62f3f3956a32ba92558722ada3fb589f9365"
+  integrity sha512-7tqB9JDPKDAi+RubhaJ11TXkn1KvYkf9lxMinGgtNhIlp58MBhOWo86ZuGoslovsant5RkyP7rQbTDcPKPVwDQ==
   dependencies:
     "@react-native-community/eslint-config" "2.0.0"
     eslint-plugin-import "^2.22.0"
-    typescript "^3.9.5"
+    typescript "^3.9.6"
 
 eslint-import-resolver-node@^0.3.3:
   version "0.3.4"
@@ -5899,7 +5899,12 @@ typedarray@^0.0.6:
   resolved "https://registry.yarnpkg.com/typedarray/-/typedarray-0.0.6.tgz#867ac74e3864187b1d3d47d996a78ec5c8830777"
   integrity sha1-hnrHTjhkGHsdPUfZlqeOxciDB3c=
 
-typescript@^3.9.5, typescript@~3.9.5:
+typescript@^3.9.6:
+  version "3.9.6"
+  resolved "https://registry.yarnpkg.com/typescript/-/typescript-3.9.6.tgz#8f3e0198a34c3ae17091b35571d3afd31999365a"
+  integrity sha512-Pspx3oKAPJtjNwE92YS05HQoY7z2SFyOpHo9MqJor3BXAGNaPUs83CuVp9VISFkSjyRfiTpmKuAYGJB7S7hOxw==
+
+typescript@~3.9.5:
   version "3.9.5"
   resolved "https://registry.yarnpkg.com/typescript/-/typescript-3.9.5.tgz#586f0dba300cde8be52dd1ac4f7e1009c1b13f36"
   integrity sha512-hSAifV3k+i6lEoCJ2k6R2Z/rp/H3+8sdmcn5NrS3/3kE7+RyZXm9aqvxWqjEXHAd8b0pShatpcdMTvEdvAJltQ==
