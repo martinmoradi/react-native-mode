@@ -2,12 +2,16 @@ import React, { useRef } from "react";
 import { TextInput as RNTextInput } from "react-native";
 import { useFormik } from "formik";
 import * as Yup from "yup";
+import { BorderlessButton } from "react-native-gesture-handler";
+import { StackNavigationProp } from "@react-navigation/stack";
+import { CompositeNavigationProp } from "@react-navigation/native";
+import { DrawerNavigationProp } from "@react-navigation/drawer";
 
 import { Container, Button, Text, Box } from "../components";
-import { Routes, StackNavigationProps } from "../components/Navigation";
+import { AuthenticationRoutes, HomeRoutes } from "../components/Navigation";
+import TextInput from "../components/Form/TextInput";
+import Checkbox from "../components/Form/Checkbox";
 
-import TextInput from "./components/Form/TextInput";
-import Checkbox from "./components/Form/Checkbox";
 import Footer from "./components/Footer";
 
 const LoginSchema = Yup.object().shape({
@@ -18,7 +22,14 @@ const LoginSchema = Yup.object().shape({
   email: Yup.string().email("Invalid email").required("Required"),
 });
 
-const Login = ({ navigation }: StackNavigationProps<Routes, "Login">) => {
+interface LoginProps {
+  navigation: CompositeNavigationProp<
+    StackNavigationProp<AuthenticationRoutes, "Login">,
+    DrawerNavigationProp<HomeRoutes, "OutfitIdeas">
+  >;
+}
+
+const Login = ({ navigation }: LoginProps) => {
   const {
     handleChange,
     handleBlur,
@@ -30,7 +41,7 @@ const Login = ({ navigation }: StackNavigationProps<Routes, "Login">) => {
   } = useFormik({
     validationSchema: LoginSchema,
     initialValues: { email: "", password: "", remember: true },
-    onSubmit: (v) => console.log(v),
+    onSubmit: () => navigation.navigate("OutfitIdeas"),
   });
   const password = useRef<RNTextInput>(null);
   const footer = (
@@ -41,7 +52,7 @@ const Login = ({ navigation }: StackNavigationProps<Routes, "Login">) => {
     />
   );
   return (
-    <Container {...{ footer }}>
+    <Container pattern={0} {...{ footer }}>
       <Box padding="xl">
         <Text variant="title1" textAlign="center" marginBottom="l">
           Welcome back
@@ -80,18 +91,24 @@ const Login = ({ navigation }: StackNavigationProps<Routes, "Login">) => {
             onSubmitEditing={() => handleSubmit()}
             secureTextEntry
           />
-          <Box flexDirection="row" justifyContent="space-between">
+          <Box
+            flexDirection="row"
+            justifyContent="space-between"
+            alignItems="center"
+            marginVertical="s"
+          >
             <Checkbox
               label="Remember me"
               checked={values.remember}
               onChange={() => setFieldValue("remember", !values.remember)}
             />
-            <Button
-              variant="transparent"
+            <BorderlessButton
               onPress={() => navigation.navigate("ForgotPassword")}
             >
-              <Text color="primary">Forgot password</Text>
-            </Button>
+              <Text variant="button" color="primary">
+                Forgot password
+              </Text>
+            </BorderlessButton>
           </Box>
           <Box alignItems="center" marginTop="m">
             <Button

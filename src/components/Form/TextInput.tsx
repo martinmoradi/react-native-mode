@@ -6,7 +6,9 @@ import {
 } from "react-native";
 import { Feather as Icon } from "@expo/vector-icons";
 
-import { Box, useTheme } from "../../../components";
+import { Box, useTheme } from "..";
+import RoundedIcon from "../RoundedIcon";
+import { Text } from "../Theme";
 
 interface TextInputProps extends RNTextInputProps {
   icon: string;
@@ -18,8 +20,8 @@ const TextInput = forwardRef<RNTextInput, TextInputProps>(
   ({ icon, touched, error, ...props }, ref) => {
     const theme = useTheme();
     const SIZE = theme.borderRadii.m * 2.5;
-    const reColor = !touched ? "text" : error ? "danger" : "primary";
-    const color = theme.colors[reColor];
+    const validationColor = error ? "danger" : "primary";
+    const color = !touched ? "text" : validationColor;
     return (
       <Box
         flexDirection="row"
@@ -27,36 +29,29 @@ const TextInput = forwardRef<RNTextInput, TextInputProps>(
         alignItems="center"
         borderRadius="s"
         borderWidth={StyleSheet.hairlineWidth}
-        borderColor={reColor}
+        borderColor={color}
         padding="s"
       >
         <Box padding="s">
-          <Icon name={icon} size={16} {...{ color }} />
+          <Text {...{ color }}>
+            <Icon name={icon} size={16} />
+          </Text>
         </Box>
         <Box flex={1}>
           <RNTextInput
             underlineColorAndroid="transparent"
-            placeholderTextColor={color}
+            placeholderTextColor={theme.colors[color]}
             {...{ ref }}
             {...props}
           />
         </Box>
         {touched && (
-          <Box
-            height={SIZE}
-            width={SIZE}
-            justifyContent="center"
-            alignItems="center"
+          <RoundedIcon
+            name={!error ? "check" : "x"}
+            size={SIZE}
             backgroundColor={!error ? "primary" : "danger"}
-            style={{ borderRadius: SIZE / 2 }}
-          >
-            <Icon
-              name={!error ? "check" : "x"}
-              color="white"
-              size={16}
-              style={{ textAlign: "center" }}
-            />
-          </Box>
+            color="white"
+          />
         )}
       </Box>
     );
