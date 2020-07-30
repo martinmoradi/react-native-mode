@@ -14,6 +14,10 @@ export const theme = {
     white: "white",
     grey: "#F4F0EF",
     primaryLight: "#E7F9F7",
+    orange: "#FE5E33",
+    yellow: "#FFC641",
+    pink: "#FF87A2",
+    violet: "#442CB9",
   },
   spacing: {
     s: 8,
