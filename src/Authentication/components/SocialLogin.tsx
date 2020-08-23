@@ -3,6 +3,7 @@ import React, { ReactNode } from "react";
 import Svg, { Path } from "react-native-svg";
 
 import { Box, useTheme } from "../../components";
+import { palette } from "../../components/Theme";
 
 const Google = () => (
   <Svg width={20} height={20} viewBox="0 0 20 20" fill="none">
@@ -55,7 +56,7 @@ const SocialIcon = ({ children }: SocialIconProps) => {
   return (
     <Box
       marginHorizontal="s"
-      backgroundColor="white"
+      style={{ backgroundColor: palette.white }}
       width={SIZE}
       height={SIZE}
       borderRadius="l"

@@ -1,6 +1,10 @@
 import React from "react";
 import { Dimensions, Image } from "react-native";
-import { DrawerActions, useNavigation } from "@react-navigation/native";
+import {
+  DrawerActions,
+  useNavigation,
+  CommonActions,
+} from "@react-navigation/native";
 
 import { Box, useTheme, Text, Header } from "../../components";
 
@@ -22,30 +26,36 @@ const items: DrawerItemProps[] = [
     icon: "heart",
     label: "Favorites Outfits",
     screen: "FavoriteOutfits",
-    color: "orange",
+    color: "drawer1",
   },
   {
     icon: "user",
     label: "Edit Profile",
     screen: "FavoriteOutfits",
-    color: "yellow",
+    color: "drawer2",
   },
   {
     icon: "clock",
     label: "Transaction History",
     screen: "TransactionHistory",
-    color: "pink",
+    color: "drawer3",
   },
   {
     icon: "settings",
     label: "Notifications Settings",
     screen: "FavoriteOutfits",
-    color: "violet",
+    color: "drawer4",
   },
   {
     icon: "log-out",
     label: "Logout",
-    screen: "FavoriteOutfits",
+    onPress: (navigation) =>
+      navigation.dispatch(
+        CommonActions.reset({
+          index: 0,
+          routes: [{ name: "Authentication" }],
+        })
+      ),
     color: "secondary",
   },
 ];
@@ -54,7 +64,7 @@ const Drawer = () => {
   const theme = useTheme();
   return (
     <Box flex={1}>
-      <Box flex={0.2} backgroundColor="white">
+      <Box flex={0.2} backgroundColor="background">
         <Box
           position="absolute"
           top={0}
@@ -83,7 +93,7 @@ const Drawer = () => {
           left={0}
           right={0}
           bottom={0}
-          backgroundColor="white"
+          backgroundColor="background"
           borderTopLeftRadius="xl"
           borderBottomRightRadius="xl"
           justifyContent="center"
@@ -112,7 +122,7 @@ const Drawer = () => {
         </Box>
       </Box>
       <Box
-        backgroundColor="white"
+        backgroundColor="background"
         width={DRAWER_WIDTH}
         overflow="hidden"
         height={height * 0.61}

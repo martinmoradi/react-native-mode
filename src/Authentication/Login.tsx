@@ -3,6 +3,7 @@ import { TextInput as RNTextInput } from "react-native";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import { BorderlessButton } from "react-native-gesture-handler";
+import { CommonActions } from "@react-navigation/native";
 
 import { Container, Button, Text, Box } from "../components";
 import { AuthNavigationProps } from "../components/Navigation";
@@ -31,7 +32,13 @@ const Login = ({ navigation }: AuthNavigationProps<"Login">) => {
   } = useFormik({
     validationSchema: LoginSchema,
     initialValues: { email: "", password: "", remember: true },
-    onSubmit: () => navigation.navigate("Home"),
+    onSubmit: () =>
+      navigation.dispatch(
+        CommonActions.reset({
+          index: 0,
+          routes: [{ name: "Home" }],
+        })
+      ),
   });
   const password = useRef<RNTextInput>(null);
   const footer = (
