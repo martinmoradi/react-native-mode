@@ -3,9 +3,13 @@ import { StyleSheet, Dimensions, ImageRequireSource } from "react-native";
 import Animated, {
   add,
   Extrapolate,
-  interpolate,
+  interpolateNode,
 } from "react-native-reanimated";
-import { mixColor, mix, usePanGestureHandler } from "react-native-redash";
+import {
+  mixColor,
+  mix,
+  usePanGestureHandler,
+} from "react-native-redash/lib/module/v1";
 import { PanGestureHandler } from "react-native-gesture-handler";
 
 import { Box } from "../../components";
@@ -34,7 +38,7 @@ const Card = ({ position, onSwipe, source, step }: CardProps) => {
   const backgroundColor = mixColor(position, "#C9E9E7", "#74BCB8");
   const translateYOffset = mix(position, 0, -50);
   const scale = mix(position, 1, 0.9);
-  const imageScale = interpolate(position, {
+  const imageScale = interpolateNode(position, {
     inputRange: [0, step],
     outputRange: [1.2, 1],
     extrapolate: Extrapolate.CLAMP,

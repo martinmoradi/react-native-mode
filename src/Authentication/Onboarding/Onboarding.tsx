@@ -1,12 +1,16 @@
 import React, { useRef } from "react";
 import { View, StyleSheet, Dimensions, Image } from "react-native";
-import { interpolateColor, useScrollHandler } from "react-native-redash";
+import {
+  interpolateColor,
+  useScrollHandler,
+} from "react-native-redash/lib/module/v1";
 import Animated, {
   multiply,
   divide,
   Extrapolate,
-  interpolate,
+  interpolateNode,
 } from "react-native-reanimated";
+import { ScrollView } from "react-native-gesture-handler";
 
 import { useTheme } from "../../components";
 import { AuthNavigationProps } from "../../components/Navigation";
@@ -117,7 +121,7 @@ export const assets = slides.map((slide) => slide.picture.src);
 const Onboarding = ({ navigation }: AuthNavigationProps<"Onboarding">) => {
   const styles = useStyles();
   const theme = useTheme();
-  const scroll = useRef<Animated.ScrollView>(null);
+  const scroll = useRef<ScrollView>(null);
   const { scrollHandler, x } = useScrollHandler();
   const backgroundColor = interpolateColor(x, {
     inputRange: slides.map((_, i) => i * width),
@@ -127,7 +131,7 @@ const Onboarding = ({ navigation }: AuthNavigationProps<"Onboarding">) => {
     <View style={styles.container}>
       <Animated.View style={[styles.slider, { backgroundColor }]}>
         {slides.map(({ picture }, index) => {
-          const opacity = interpolate(x, {
+          const opacity = interpolateNode(x, {
             inputRange: [
               (index - 0.5) * width,
               index * width,
@@ -191,9 +195,10 @@ const Onboarding = ({ navigation }: AuthNavigationProps<"Onboarding">) => {
                     if (last) {
                       navigation.navigate("Welcome");
                     } else {
-                      scroll.current
-                        ?.getNode()
-                        .scrollTo({ x: width * (index + 1), animated: true });
+                      scroll.current?.scrollTo({
+                        x: width * (index + 1),
+                        animated: true,
+                      });
                     }
                   }}
                   {...{ subtitle, description, last }}

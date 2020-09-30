@@ -1,9 +1,12 @@
 import React from "react";
 import { Dimensions, View } from "react-native";
 import moment from "moment";
-import Animated, { divide, multiply, sub } from "react-native-reanimated";
-import { useIsFocused } from "@react-navigation/native";
-import { useTransition } from "react-native-redash";
+import Animated, {
+  useAnimatedStyle,
+  useSharedValue,
+  withTiming,
+} from "react-native-reanimated";
+import { useFocusEffect } from "@react-navigation/native";
 
 import { useTheme, Box } from "../../../components";
 import { Theme } from "../../../components/Theme";
@@ -29,8 +32,11 @@ interface GraphProps {
 }
 
 const Graph = ({ data, startDate, numberOfMonths }: GraphProps) => {
-  const isFocused = useIsFocused();
-  const transition = useTransition(isFocused, { duration: 650 });
+  const transition = useSharedValue(0);
+  useFocusEffect(() => {
+    transition.value = withTiming(1, { duration: 650 });
+    return () => (transition.value = 0);
+  });
   const theme = useTheme();
   const canvasWidth = wWidth - theme.spacing.m * 2;
   const canvasHeight = canvasWidth * aspectRatio;
@@ -57,8 +63,14 @@ const Graph = ({ data, startDate, numberOfMonths }: GraphProps) => {
             moment.duration(moment(point.date).diff(startDate)).asMonths()
           );
           const totalHeight = lerp(0, height, point.value / maxY);
-          const currentHeight = multiply(totalHeight, transition);
-          const translateY = divide(sub(totalHeight, currentHeight), 2);
+          // eslint-disable-next-line react-hooks/rules-of-hooks
+          const style = useAnimatedStyle(() => {
+            const currentHeight = totalHeight * transition.value;
+            const translateY = (totalHeight - currentHeight) / 2;
+            return {
+              transform: [{ translateY }, { scaleY: transition.value }],
+            };
+          });
           return (
             <AnimatedBox
               key={point.id}
@@ -67,7 +79,7 @@ const Graph = ({ data, startDate, numberOfMonths }: GraphProps) => {
               bottom={0}
               width={step}
               height={totalHeight}
-              style={{ transform: [{ translateY }, { scaleY: transition }] }}
+              style={style}
             >
               <Box
                 backgroundColor={point.color}
