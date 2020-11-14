@@ -43,7 +43,7 @@ const items: DrawerItemProps[] = [
   {
     icon: "settings",
     label: "Notifications Settings",
-    screen: "FavoriteOutfits",
+    screen: "Settings",
     color: "drawer4",
   },
   {
@@ -80,7 +80,10 @@ const Drawer = () => {
               icon: "x",
               onPress: () => navigation.dispatch(DrawerActions.closeDrawer()),
             }}
-            right={{ icon: "shopping-bag", onPress: () => true }}
+            right={{
+              icon: "shopping-bag",
+              onPress: () => navigation.navigate("Cart"),
+            }}
             dark
           />
         </Box>

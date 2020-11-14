@@ -1,11 +1,15 @@
 import React, { ReactNode } from "react";
-import { ViewStyle, TextStyle, ImageStyle } from "react-native";
+import { ViewStyle, TextStyle, ImageStyle, Dimensions } from "react-native";
 import {
   ThemeProvider as ReStyleThemeProvider,
   createText,
   createBox,
   useTheme as useReTheme,
 } from "@shopify/restyle";
+
+const { width } = Dimensions.get("window");
+
+export const aspectRatio = width / 375;
 
 export const palette = {
   green: "#2CB9B0",
@@ -24,10 +28,11 @@ const theme = {
     secondary: "#0C0D34",
     danger: "#FF0058",
     info: "#808080",
+    edit: palette.lightBlue,
     text: "rgba(12, 13, 52, 0.7)",
     textContrast: palette.white,
     background: palette.white,
-    background2: "#F4F0EF",
+    background2: "#F6F6F6",
     graph1: palette.orange,
     graph2: palette.yellow,
     drawer1: palette.orange,
