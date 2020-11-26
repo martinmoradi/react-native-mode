@@ -1,14 +1,12 @@
-import React, { ReactNode, useCallback, useRef } from "react";
-import { Dimensions, StyleSheet } from "react-native";
+import React, { ReactNode, useCallback } from "react";
+import { Dimensions, StyleSheet, View } from "react-native";
 import { PanGestureHandler } from "react-native-gesture-handler";
 import Animated, {
-  Transition,
-  Transitioning,
-  TransitioningView,
   useAnimatedGestureHandler,
   useAnimatedStyle,
   useSharedValue,
   withSpring,
+  withTiming,
 } from "react-native-reanimated";
 import { snapPoint } from "react-native-redash";
 import { LinearGradient } from "expo-linear-gradient";
@@ -19,6 +17,7 @@ import { aspectRatio } from "../../components/Theme";
 interface SwipeableRowProps {
   children: ReactNode;
   onDelete: () => void;
+  height: number;
 }
 
 const { width } = Dimensions.get("window");
@@ -26,17 +25,13 @@ const finalDestination = width;
 const editWidth = 85 * aspectRatio;
 const snapPoints = [-editWidth, 0, finalDestination];
 
-const transition = (
-  <Transition.Together>
-    <Transition.Out type="fade" />
-    <Transition.In type="fade" />
-  </Transition.Together>
-);
-
-const SwipeableRow = ({ children, onDelete }: SwipeableRowProps) => {
-  const ref = useRef<TransitioningView>(null);
+const SwipeableRow = ({
+  children,
+  onDelete,
+  height: defaultHeight,
+}: SwipeableRowProps) => {
+  const height = useSharedValue(defaultHeight);
   const deleteItem = useCallback(() => {
-    ref.current?.animateNextTransition();
     onDelete();
   }, [onDelete]);
   const theme = useTheme();
@@ -57,13 +52,14 @@ const SwipeableRow = ({ children, onDelete }: SwipeableRowProps) => {
         },
         () => {
           if (dest === finalDestination) {
-            deleteItem();
+            height.value = withTiming(0, { duration: 250 }, () => deleteItem());
           }
         }
       );
     },
   });
   const style = useAnimatedStyle(() => ({
+    height: height.value,
     backgroundColor: theme.colors.background,
     transform: [{ translateX: translateX.value }],
   }));
@@ -74,7 +70,7 @@ const SwipeableRow = ({ children, onDelete }: SwipeableRowProps) => {
     opacity: translateX.value < 0 ? 1 : 0,
   }));
   return (
-    <Transitioning.View ref={ref} transition={transition}>
+    <View>
       <Animated.View style={[StyleSheet.absoluteFill, deleteStyle]}>
         <LinearGradient
           style={StyleSheet.absoluteFill}
@@ -127,7 +123,7 @@ const SwipeableRow = ({ children, onDelete }: SwipeableRowProps) => {
       <PanGestureHandler onGestureEvent={onGestureEvent}>
         <Animated.View style={style}>{children}</Animated.View>
       </PanGestureHandler>
-    </Transitioning.View>
+    </View>
   );
 };
 
